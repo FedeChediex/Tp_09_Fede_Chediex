@@ -82,7 +82,7 @@ public class PostController : ControllerBase
         db.SaveChanges();
         Post postOriginal = BD.ObtenerPost(id);
         int i = 0;
-
+    ///https://learn.microsoft.com/es-es/ef/core/get-started/overview/first-app?tabs=netcore-cli
         return Ok(postOriginal);
     }
 
