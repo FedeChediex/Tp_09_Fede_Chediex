@@ -19,7 +19,6 @@ public class BD
     }
 
 
-
     /////////
     public static List<Categoria> ListarCategorias()
     {

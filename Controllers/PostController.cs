@@ -67,23 +67,39 @@ public class PostController : ControllerBase
     }
     
     [HttpPatch]
-    public IActionResult Patch(int id, Post c)
+    public IActionResult Patch(int id, Post n)
     {
-        if (id < 1 || c.Titulo == null || c.Titulo == "" || c.Imagen == null || c.Imagen == "" || c.Contenido == null || c.Contenido == "" || c.IdUsuario < 1 || c.IdCategoria < 1)
+        if (id < 1 || n.IdUsuario < 1 || n.IdCategoria < 1)
         {
             return BadRequest();
         }
-        if (BD.ObtenerUsuario(c.IdUsuario) == null || BD.ObtenerCategoria(c.IdCategoria) == null || BD.ObtenerPost(id) == null)
+        if (BD.ObtenerUsuario(n.IdUsuario) == null || BD.ObtenerCategoria(n.IdCategoria) == null || BD.ObtenerPost(id) == null)
         {
             return NotFound();
         }
+
+        Post o = BD.ObtenerPost(id);
+
+        if (n.Titulo != null && n.Titulo != "" && n.Titulo != o.Titulo)
+        {
+            o.Titulo = n.Titulo;
+        }
+        if (n.Imagen != null && n.Imagen != "" && n.Imagen != o.Imagen)
+        {
+            o.Imagen = n.Imagen;
+        }
+        if (n.Contenido == null && n.Contenido != "" && n.Contenido != o.Contenido)
+        {
+            o.Contenido = n.Contenido;
+        }
+        if(n.IdCategoria != o.IdCategoria)
+        {
+            o.IdCategoria = n.IdCategoria;
+        }
+
+        BD.UpdatePost(id, o);
         
-        Post.Add(new Post { Titulo = c.Titulo, Contenido = c.Contenido, Imagen = c.Imagen, IdCategoria = c.IdCategoria});
-        db.SaveChanges();
-        Post postOriginal = BD.ObtenerPost(id);
-        int i = 0;
-    ///https://learn.microsoft.com/es-es/ef/core/get-started/overview/first-app?tabs=netcore-cli
-        return Ok(postOriginal);
+        return Ok();
     }
 
 
