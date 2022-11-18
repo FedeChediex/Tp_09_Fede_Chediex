@@ -51,7 +51,7 @@ public class PostController : ControllerBase
         BD.AgregarPost(c);
         return Ok();
     }
-    [HttpPut]
+    [HttpPut("{id}")]
     public IActionResult Put(int id, Post c)
     {
         if (id < 1 || c.Titulo == null || c.Titulo == "" || c.Imagen == null || c.Imagen == "" || c.Contenido == null || c.Contenido == "" || c.IdUsuario < 1 || c.IdCategoria < 1)
@@ -66,7 +66,7 @@ public class PostController : ControllerBase
         return Ok();
     }
     
-    [HttpPatch]
+    [HttpPatch("{id}")]
     public IActionResult Patch(int id, Post n)
     {
         if (id < 1 || n.IdUsuario < 1 || n.IdCategoria < 1)
@@ -88,7 +88,7 @@ public class PostController : ControllerBase
         {
             o.Imagen = n.Imagen;
         }
-        if (n.Contenido == null && n.Contenido != "" && n.Contenido != o.Contenido)
+        if (n.Contenido != null && n.Contenido != "" && n.Contenido != o.Contenido)
         {
             o.Contenido = n.Contenido;
         }
@@ -102,5 +102,20 @@ public class PostController : ControllerBase
         return Ok();
     }
 
+    [HttpDelete("{id}")]
+   public IActionResult Delete(int id){
+    if(id < 1){
+        return BadRequest();
+    }
+    Post c = BD.ObtenerPost(id);
 
+    if(c == null) {
+        return NotFound();
+    }
+
+    BD.EliminarPost(id);
+    return Ok();
+   }
 }
+
+

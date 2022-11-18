@@ -4,7 +4,7 @@ using Dapper;
 //polygon(0 40%, 100% 40%, 100% 85%, 95% 85%, 95% 85%, 85% 85%, 85% 85%, 8% 85%, 0 70%);
 public class BD
 {
-    private static string _connectionString = @"Server=A-PHZ2-CIDI-051;DataBase=Tp_08;Trusted_Connection=True";
+    private static string _connectionString = @"Server=A-PHZ2-CIDI-055;DataBase=Tp_08;Trusted_Connection=True";
 
     //Tp_09//
     public static void UpdatePost(int id, Post post)
@@ -15,6 +15,14 @@ public class BD
         {
 
             bd.Execute(sql, new{pTitulo = post.Titulo, pImagen = post.Imagen, pContenido = post.Contenido,  pIdCategoria = post.IdCategoria, pIdUsuario = post.IdUsuario, pIdPost = id});
+        }
+    }
+
+    public static void EliminarPost(int id)
+    {
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            connection.Execute("DELETE FROM Post WHERE IdCategoria = @pId", new { pId = id });
         }
     }
 
